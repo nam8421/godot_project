@@ -14,8 +14,8 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Pokemon Battle"
-run/main_scene="res://scenes/Main.tscn"
+config/name="POKEMON - 아직미정"
+run/main_scene="res://scenes/Intro.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://assets/25.png"
 

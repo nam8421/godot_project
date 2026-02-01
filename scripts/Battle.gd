@@ -32,6 +32,13 @@ func _ready():
 		var btn = get_node("PanelMenu/HBoxFight/GridContainer/BtnMove" + str(i+1))
 		btn.pressed.connect(func(): _on_move_pressed(i))
 
+	# 초기 포커스
+	$PanelMenu/HBoxMain/BtnFight.grab_focus()
+
+func _input(event):
+	if menu_state == "FIGHT" and event.is_action_pressed("ui_cancel"):
+		_on_back()
+
 func update_ui():
 	# Wild
 	text_wild_name.text = "Wild " + Global.wild_pokemon.name + " Lv." + str(Global.wild_pokemon.level)
@@ -64,9 +71,17 @@ func update_ui():
 			else:
 				btn.text = "-"
 				btn.disabled = true
+		
+		# 첫 번째 유효한 기술 버튼에 포커스
+		var first_move_btn = get_node("PanelMenu/HBoxFight/GridContainer/BtnMove1")
+		if first_move_btn and not first_move_btn.disabled:
+			first_move_btn.grab_focus()
 	else:
 		$PanelMenu/HBoxMain.visible = true
 		$PanelMenu/HBoxFight.visible = false
+		
+		# 메인 메뉴로 돌아오면 싸우다 버튼 포커스
+		$PanelMenu/HBoxMain/BtnFight.grab_focus()
 
 func add_log(text):
 	logs.text += text + "\n"

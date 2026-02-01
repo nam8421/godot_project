@@ -1,36 +1,34 @@
-extends Control
+extends Node2D
 
-@onready var label_info = $LabelInfo
-@onready var texture_player = $TexturePlayer
+@onready var starter_selection_ui = $CanvasLayer/StarterSelection
+@onready var dialog_label = $CanvasLayer/DialogLabel
 
 func _ready():
-	# UI 업데이트
-	update_ui()
+	starter_selection_ui.visible = false
+	dialog_label.visible = false
 	
-	# 버튼 연결
-	$VBoxContainer/BtnBattle.pressed.connect(_on_battle_pressed)
-	$VBoxContainer/BtnHeal.pressed.connect(_on_heal_pressed)
-	$VBoxContainer/BtnPokedex.pressed.connect(_on_pokedex_pressed)
-	$VBoxContainer/BtnQuit.pressed.connect(_on_quit_pressed)
+	$Buildings/OakNPC.interacted.connect(_on_oak_interacted)
+	
+	# 스타팅 포켓몬 버튼 연결
+	$CanvasLayer/StarterSelection/BtnSquirtle.pressed.connect(func(): _on_starter_selected("꼬부기"))
+	$CanvasLayer/StarterSelection/BtnCharmander.pressed.connect(func(): _on_starter_selected("파이리"))
+	$CanvasLayer/StarterSelection/BtnBulbasaur.pressed.connect(func(): _on_starter_selected("이상해씨"))
+	$CanvasLayer/StarterSelection/BtnPikachu.pressed.connect(func(): _on_starter_selected("피카츄"))
 
-func update_ui():
-	if Global.player_pokemon:
-		label_info.text = "파트너: %s (Lv.%d)" % [Global.player_pokemon.name, Global.player_pokemon.level]
-		var path = "res://assets/%d.png" % Global.player_pokemon.id
-		if FileAccess.file_exists(path):
-			texture_player.texture = load(path)
+func _on_oak_interacted():
+	if Global.player_pokemon == null:
+		dialog_label.text = "오박사: 자, 여기서 자네의 파트너를 골라보게나."
+		dialog_label.visible = true
+		starter_selection_ui.visible = true
+	else:
+		dialog_label.text = "오박사: 자네의 포켓몬이 아주 건강해 보이는구만!"
+		dialog_label.visible = true
+		await get_tree().create_timer(2.0).timeout
+		dialog_label.visible = false
 
-func _on_battle_pressed():
-	# 배틀 씬으로 전환
-	get_tree().change_scene_to_file("res://scenes/Battle.tscn")
-
-func _on_heal_pressed():
-	if Global.player_pokemon:
-		Global.player_pokemon.heal()
-		print("포켓몬이 회복되었습니다.")
-
-func _on_pokedex_pressed():
-	get_tree().change_scene_to_file("res://scenes/Pokedex.tscn")
-
-func _on_quit_pressed():
-	get_tree().quit()
+func _on_starter_selected(pokemon_name):
+	Global.set_start_pokemon(pokemon_name)
+	starter_selection_ui.visible = false
+	dialog_label.text = "오박사: " + pokemon_name + "(을)를 선택했군! 잘 부탁한다."
+	await get_tree().create_timer(2.0).timeout
+	dialog_label.visible = false

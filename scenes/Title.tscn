@@ -67,18 +67,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/separation = 10
 
-[node name="BtnSquirtle" type="Button" parent="VBoxContainer"]
+[node name="BtnStart" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "꼬부기 선택"
-
-[node name="BtnCharmander" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "파이리 선택"
-
-[node name="BtnBulbasaur" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "이상해씨 선택"
-
-[node name="BtnPikachu" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "피카츄 선택"
+theme_override_font_sizes/font_size = 24
+text = "게임 시작"

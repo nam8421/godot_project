@@ -1,91 +1,169 @@
-[gd_scene load_steps=2 format=3 uid="uid://explore_scene"]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/Explore.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/tileset_nature.png" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="3"]
+[ext_resource type="Script" path="res://scripts/NPC.gd" id="4"]
+[ext_resource type="Texture2D" path="res://assets/oak_walk.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/house_red.png" id="6"]
+[ext_resource type="Texture2D" path="res://assets/building_lab.png" id="7"]
+[ext_resource type="Texture2D" path="res://assets/select_squirtle.png" id="8"]
+[ext_resource type="Texture2D" path="res://assets/select_charmander.png" id="9"]
+[ext_resource type="Texture2D" path="res://assets/select_bulbasaur.png" id="10"]
+[ext_resource type="Texture2D" path="res://assets/select_pikachu.png" id="11"]
 
-[node name="Explore" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[sub_resource type="TileSetAtlasSource" id="1"]
+texture = ExtResource("2")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+
+[sub_resource type="TileSet" id="2"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("1")
+
+[sub_resource type="CapsuleShape2D" id="3"]
+radius = 8.0
+height = 20.0
+
+[sub_resource type="RectangleShape2D" id="4"]
+size = Vector2(32, 32)
+
+[node name="Explore" type="Node2D"]
 script = ExtResource("1")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.941176, 1, 0.941176, 1)
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("2")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 131072, 0, 0, 131073, 0, 0, 131074, 0, 0, 131075, 0, 0, 294916, 2, 1, 294917, 2, 1, 294918, 2, 1)
 
-[node name="LabelTitle" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -200.0
-offset_top = 50.0
-offset_right = 200.0
-offset_bottom = 100.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 48
-text = "모험을 떠나자!"
-horizontal_alignment = 1
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(400, 300)
+scale = Vector2(25, 19)
+texture = ExtResource("2")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
 
-[node name="LabelInfo" type="Label" parent="."]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 50.0
-offset_right = 300.0
-offset_bottom = 80.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "파트너: ???"
+[node name="Buildings" type="Node2D" parent="."]
+y_sort_enabled = true
 
-[node name="TexturePlayer" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -100.0
-offset_right = 100.0
-offset_bottom = 100.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
+[node name="PlayerHouse" type="StaticBody2D" parent="Buildings"]
+position = Vector2(250, 200)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
+[node name="Sprite2D" type="Sprite2D" parent="Buildings/PlayerHouse"]
+texture = ExtResource("6")
+offset = Vector2(0, -20)
+region_rect = Rect2(0, 0, 64, 64)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Buildings/PlayerHouse"]
+polygon = PackedVector2Array(-25, 10, 25, 10, 25, -20, -25, -20)
+
+[node name="RivalHouse" type="StaticBody2D" parent="Buildings"]
+position = Vector2(550, 200)
+
+[node name="Sprite2D" type="Sprite2D" parent="Buildings/RivalHouse"]
+texture = ExtResource("6")
+offset = Vector2(0, -20)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Buildings/RivalHouse"]
+polygon = PackedVector2Array(-25, 10, 25, 10, 25, -20, -25, -20)
+
+[node name="OakLab" type="StaticBody2D" parent="Buildings"]
+position = Vector2(400, 450)
+
+[node name="Sprite2D" type="Sprite2D" parent="Buildings/OakLab"]
+texture = ExtResource("7")
+offset = Vector2(0, -30)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Buildings/OakLab"]
+polygon = PackedVector2Array(-40, 20, 40, 20, 40, -30, -40, -30)
+
+[node name="Player" parent="Buildings" instance=ExtResource("3")]
+position = Vector2(250, 280)
+
+[node name="OakNPC" type="Area2D" parent="Buildings"]
+position = Vector2(400, 500)
+script = ExtResource("4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Buildings/OakNPC"]
+texture = ExtResource("5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/OakNPC"]
+shape = SubResource("3")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DialogLabel" type="Label" parent="CanvasLayer"]
+visible = false
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -250.0
-offset_right = 100.0
-offset_bottom = -50.0
+offset_left = -300.0
+offset_top = -100.0
+offset_right = 300.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/separation = 15
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "대화 내용..."
+horizontal_alignment = 1
 
-[node name="BtnBattle" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "풀숲 탐험하기"
+[node name="StarterSelection" type="HBoxContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -75.0
+offset_right = 300.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
 
-[node name="BtnHeal" type="Button" parent="VBoxContainer"]
+[node name="BtnSquirtle" type="TextureButton" parent="CanvasLayer/StarterSelection"]
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-text = "포켓몬 회복"
+texture_normal = ExtResource("8")
+ignore_texture_size = true
+stretch_mode = 5
 
-[node name="BtnPokedex" type="Button" parent="VBoxContainer"]
+[node name="BtnCharmander" type="TextureButton" parent="CanvasLayer/StarterSelection"]
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-text = "포켓몬 도감"
+texture_normal = ExtResource("9")
+ignore_texture_size = true
+stretch_mode = 5
 
-[node name="BtnQuit" type="Button" parent="VBoxContainer"]
+[node name="BtnBulbasaur" type="TextureButton" parent="CanvasLayer/StarterSelection"]
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-text = "종료"
+texture_normal = ExtResource("10")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="BtnPikachu" type="TextureButton" parent="CanvasLayer/StarterSelection"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+texture_normal = ExtResource("11")
+ignore_texture_size = true
+stretch_mode = 5

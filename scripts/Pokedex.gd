@@ -5,7 +5,9 @@ extends Control
 const ITEMS_PER_PAGE = 50 # 스크롤이 되므로 한 번에 많이 로드해도 됨
 
 func _ready():
-	_load_list()
+	_load_list_correct()
+	$BtnBack.pressed.connect(_on_back_pressed)
+	$BtnBack.grab_focus()
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):

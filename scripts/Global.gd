@@ -3,6 +3,8 @@ extends Node
 # 게임 전역 변수
 var player_pokemon = null # Pokemon 객체
 var wild_pokemon = null   # Pokemon 객체
+var player_name = ""      # 플레이어 이름
+var player_gender = ""    # 플레이어 성별 (Boy/Girl)
 var battle_logs = []
 
 var caught_pokemon = []
